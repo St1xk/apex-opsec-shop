@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Order Complete · __SHOP_NAME__</title>
+<style>
+  :root { color-scheme: light dark; }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; background: #0a0a0a; color: #f5f5f5; }
+  .wrap { max-width: 640px; margin: 0 auto; padding: 64px 24px; }
+  .check { width: 64px; height: 64px; border-radius: 50%; background: #10b981; display: flex; align-items: center; justify-content: center; margin: 0 auto 24px; font-size: 32px; }
+  h1 { text-align: center; font-size: 32px; margin: 0 0 12px; letter-spacing: -0.02em; }
+  .sub { text-align: center; color: #999; margin-bottom: 40px; }
+  .item { background: #141414; border: 1px solid #222; border-radius: 12px; padding: 24px; margin-bottom: 16px; }
+  .item h3 { margin: 0 0 12px; font-size: 18px; }
+  .key { font-family: 'SF Mono', Consolas, monospace; background: #0a0a0a; border: 1px solid #222; padding: 12px; border-radius: 8px; word-break: break-all; font-size: 13px; margin-bottom: 16px; }
+  a.btn { display: inline-block; padding: 12px 20px; background: #635BFF; color: white; border-radius: 8px; text-decoration: none; font-weight: 600; margin-right: 8px; }
+  a.btn:hover { background: #5347ff; }
+  .note { color: #666; font-size: 13px; margin-top: 24px; text-align: center; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="check">✓</div>
+  <h1>Payment Successful</h1>
+  <p class="sub">Your order has been fulfilled. Check your email for a copy.</p>
+  <div id="items">Loading order…</div>
+  <p class="note">Trouble? Email <a href="mailto:__SHOP_SUPPORT_EMAIL__" style="color:#635BFF">__SHOP_SUPPORT_EMAIL__</a> with your order ID.</p>
+</div>
+
+<script>
+async function load() {
+  const params = new URLSearchParams(location.search);
+  const sid = params.get('session_id');
+  const el = document.getElementById('items');
+  if (!sid) { el.textContent = 'Missing session id.'; return; }
+
+  try {
+    const r = await fetch('/orders/session/' + encodeURIComponent(sid));
+    const data = await r.json();
+    if (!r.ok) throw new Error(data.error || 'failed');
+    el.innerHTML = '<div class="sub" style="margin-bottom:20px">Order ' + data.order_id + '</div>';
+    for (const it of data.items) {
+      const div = document.createElement('div');
+      div.className = 'item';
+      let html = '<h3>' + it.product_name + '</h3>';
+      if (it.license_key) html += '<div style="color:#999;font-size:13px;margin-bottom:6px">License key</div><div class="key">' + it.license_key + '</div>';
+      if (it.download_url) html += '<a class="btn" href="' + it.download_url + '">Download</a>';
+      if (it.redirect_url) html += '<a class="btn" href="' + it.redirect_url + '" target="_blank">Access</a>';
+      div.innerHTML = html;
+      el.appendChild(div);
+    }
+  } catch (e) { el.textContent = 'Could not load order: ' + e.message; }
+}
+load();
+</script>
+</body>
+</html>

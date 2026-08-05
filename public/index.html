@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>__SHOP_NAME__</title>
+<style>
+  :root { color-scheme: light dark; }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; background: #0a0a0a; color: #f5f5f5; }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 48px 24px; }
+  header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 64px; }
+  .logo { font-size: 22px; font-weight: 700; letter-spacing: -0.02em; }
+  nav a { color: #aaa; text-decoration: none; margin-left: 24px; font-size: 14px; }
+  nav a:hover { color: #fff; }
+  .hero { text-align: center; margin-bottom: 64px; }
+  .hero h1 { font-size: clamp(32px, 5vw, 56px); font-weight: 800; letter-spacing: -0.03em; margin: 0 0 16px; background: linear-gradient(135deg, #fff 0%, #888 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .hero p { color: #999; font-size: 18px; margin: 0; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+  .card { background: #141414; border: 1px solid #222; border-radius: 16px; padding: 28px; transition: all 0.2s; display: flex; flex-direction: column; }
+  .card:hover { border-color: #333; transform: translateY(-2px); }
+  .card h3 { margin: 0 0 8px; font-size: 20px; font-weight: 700; }
+  .card p { color: #999; font-size: 14px; line-height: 1.5; margin: 0 0 24px; flex: 1; }
+  .price { font-size: 32px; font-weight: 800; margin-bottom: 20px; letter-spacing: -0.02em; }
+  .price small { font-size: 14px; color: #666; font-weight: 400; }
+  button { width: 100%; padding: 14px; background: #635BFF; color: white; border: none; border-radius: 10px; font-size: 15px; font-weight: 600; cursor: pointer; transition: background 0.15s; }
+  button:hover { background: #5347ff; }
+  button:disabled { background: #333; cursor: not-allowed; }
+  footer { margin-top: 96px; text-align: center; color: #555; font-size: 13px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="logo">__SHOP_NAME__</div>
+    <nav>
+      <a href="/orders.html">My Orders</a>
+      <a href="mailto:__SHOP_SUPPORT_EMAIL__">Support</a>
+    </nav>
+  </header>
+
+  <div class="hero">
+    <h1>__SHOP_TAGLINE__</h1>
+    <p>Instant delivery. Secure checkout via Stripe.</p>
+  </div>
+
+  <div class="grid" id="grid">Loading…</div>
+
+  <footer>© <span id="year"></span> __SHOP_NAME__. Secure payments by Stripe.</footer>
+</div>
+
+<script>
+document.getElementById('year').textContent = new Date().getFullYear();
+
+const fmt = (cents, currency) => new Intl.NumberFormat('en-US', { style: 'currency', currency: currency.toUpperCase() }).format(cents / 100);
+
+async function load() {
+  const grid = document.getElementById('grid');
+  try {
+    const r = await fetch('/payments/catalog');
+    const products = await r.json();
+    grid.innerHTML = '';
+    for (const p of products) {
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = `
+        <h3>${p.name}</h3>
+        <p>${p.description}</p>
+        <div class="price">${fmt(p.price_cents, p.currency)}</div>
+        <button data-id="${p.id}">Buy now</button>
+      `;
+      grid.appendChild(card);
+    }
+    grid.querySelectorAll('button').forEach(b => b.addEventListener('click', () => buy(b)));
+  } catch (e) {
+    grid.textContent = 'Failed to load products.';
+  }
+}
+
+async function buy(btn) {
+  const id = btn.dataset.id;
+  btn.disabled = true; btn.textContent = 'Redirecting…';
+  try {
+    const r = await fetch('/payments/checkout', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ items: [{ product_id: id, quantity: 1 }] }),
+    });
+    const data = await r.json();
+    if (data.url) window.location.href = data.url;
+    else throw new Error(data.error || 'checkout failed');
+  } catch (e) {
+    btn.disabled = false; btn.textContent = 'Buy now';
+    alert(e.message);
+  }
+}
+
+load();
+</script>
+</body>
+</html>

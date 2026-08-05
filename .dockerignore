@@ -1,0 +1,13 @@
+node_modules
+npm-debug.log
+.env
+.env.*
+.git
+.gitignore
+data/db
+data/products/*.zip
+data/products/*.exe
+data/products/*.rar
+*.log
+.DS_Store
+Thumbs.db
