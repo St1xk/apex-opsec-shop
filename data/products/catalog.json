@@ -2,36 +2,36 @@
   {
     "id": "supporter-week",
     "name": "1 Week Supporter",
-    "description": "7 days of full access to apex.opsec programs and methods.",
+    "description": "7 days of full access to apex.opsec programs, private tools, and updates.",
     "price_cents": 1000,
     "currency": "usd",
     "delivery": {
-      "type": "redirect",
-      "url": "https://discord.gg/replace-with-your-invite",
+      "type": "file",
+      "file": "apex-opsec-suite.zip",
       "license": true
     }
   },
   {
     "id": "supporter-month",
     "name": "1 Month Supporter",
-    "description": "30 days of full access to apex.opsec programs and methods.",
+    "description": "30 days of full access to apex.opsec programs, private tools, and updates.",
     "price_cents": 1500,
     "currency": "usd",
     "delivery": {
-      "type": "redirect",
-      "url": "https://discord.gg/replace-with-your-invite",
+      "type": "file",
+      "file": "apex-opsec-suite.zip",
       "license": true
     }
   },
   {
     "id": "supporter-lifetime",
     "name": "Lifetime Supporter",
-    "description": "Permanent lifetime access to all apex.opsec programs, methods, and future updates.",
+    "description": "Permanent lifetime access to all apex.opsec programs, methods, and all future updates.",
     "price_cents": 3000,
     "currency": "usd",
     "delivery": {
-      "type": "redirect",
-      "url": "https://discord.gg/replace-with-your-invite",
+      "type": "file",
+      "file": "apex-opsec-suite.zip",
       "license": true
     }
   }
