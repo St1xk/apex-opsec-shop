@@ -317,6 +317,12 @@ async function loadTiers() {
   }
 }
 
+const paymentLinks = {
+  'supporter-week':     'https://buy.stripe.com/28E3cx0JBbkS9OZ7FNao800',
+  'supporter-month':    'https://buy.stripe.com/eVq7sN2RJ74C6CNe4bao802',
+  'supporter-lifetime': 'https://buy.stripe.com/dRmbJ30JB74Ce5f4tBao801',
+};
+
 async function buy(btn) {
   const id = btn.dataset.id;
   const orig = btn.textContent;
@@ -328,11 +334,20 @@ async function buy(btn) {
       body: JSON.stringify({ items: [{ product_id: id, quantity: 1 }] }),
     });
     const data = await r.json();
-    if (data.url) window.location.href = data.url;
-    else throw new Error(data.error || 'checkout failed');
+    if (data.url) {
+      window.location.href = data.url;
+      return;
+    }
   } catch (e) {
+    console.warn('API checkout unavailable, falling back to direct Stripe link', e);
+  }
+
+  // Graceful fallback to verified Stripe Payment Link
+  if (paymentLinks[id]) {
+    window.location.href = paymentLinks[id];
+  } else {
     btn.disabled = false; btn.textContent = orig;
-    alert(e.message);
+    alert('Checkout currently unavailable. Please contact support.');
   }
 }
 
