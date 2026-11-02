@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Terms of Service — __SHOP_NAME__</title>
+<style>
+  :root { --bg:#0a0a0b; --bg-2:#101012; --border:#1f1f24; --text:#ededed; --muted:#8a8a94; --muted-2:#5a5a63; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--text); font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif; line-height:1.65; -webkit-font-smoothing:antialiased; }
+  a { color: inherit; text-decoration: none; }
+  .container { max-width: 720px; margin: 0 auto; padding: 0 24px; }
+  header { border-bottom: 1px solid var(--border); }
+  .nav { display: flex; justify-content: space-between; align-items: center; padding: 18px 0; }
+  .brand { font-weight: 700; font-size: 15px; }
+  .brand span { color: var(--muted); }
+  .nav-links a { color: var(--muted); font-size: 14px; margin-left: 28px; }
+  .nav-links a:hover { color: var(--text); }
+  h1 { font-size: 32px; letter-spacing: -0.02em; margin: 48px 0 8px; }
+  .updated { color: var(--muted); font-size: 13px; margin-bottom: 40px; }
+  h2 { font-size: 18px; margin: 32px 0 8px; }
+  p, li { color: var(--muted); font-size: 15px; }
+  footer { text-align: center; padding: 48px 24px; color: var(--muted-2); font-size: 12px; margin-top: 96px; border-top: 1px solid var(--border); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="container nav">
+    <a href="/" class="brand">apex<span>.opsec</span></a>
+    <nav class="nav-links">
+      <a href="/support">Support</a>
+      <a href="/privacy">Privacy</a>
+    </nav>
+  </div>
+</header>
+
+<div class="container">
+  <h1>Terms of Service</h1>
+  <p class="updated">Last updated: <span id="date"></span></p>
+
+  <h2>1. Agreement</h2>
+  <p>By purchasing or using any product from apex.opsec, you agree to these terms. If you do not agree, do not purchase.</p>
+
+  <h2>2. Digital delivery</h2>
+  <p>All products are delivered digitally, immediately after payment confirmation. License keys and access links are shown on the confirmation page and emailed to the address provided at checkout.</p>
+
+  <h2>3. License</h2>
+  <p>Each purchase grants a personal, non-transferable license to the individual whose email was used at checkout. Sharing, reselling, or redistributing purchased content is prohibited and may result in revocation of access without refund.</p>
+
+  <h2>4. Subscription duration</h2>
+  <p>Time-limited plans (1 Week, 1 Month) grant access for the stated duration starting from the moment of purchase. Lifetime plans grant access for as long as the product line remains in operation.</p>
+
+  <h2>5. Refunds</h2>
+  <p>Because access is granted immediately upon payment, all sales are final once a license key has been revealed to the purchaser. Refunds may be issued at our sole discretion in the event of delivery failure or duplicate charge.</p>
+
+  <h2>6. Prohibited use</h2>
+  <p>You agree not to use our products in ways that violate applicable laws, the terms of any third-party service, or the intellectual property rights of others. We reserve the right to revoke access without refund for any violation.</p>
+
+  <h2>7. No warranty</h2>
+  <p>Products are provided "as is" without warranty of any kind. To the maximum extent permitted by law, we disclaim all warranties, express or implied.</p>
+
+  <h2>8. Limitation of liability</h2>
+  <p>In no event shall apex.opsec be liable for any indirect, incidental, special, or consequential damages arising from your use of our products. Total liability for any claim is capped at the amount you paid us in the twelve months preceding the claim.</p>
+
+  <h2>9. Changes</h2>
+  <p>We may update these terms from time to time. Continued use after changes constitutes acceptance of the revised terms.</p>
+
+  <h2>10. Contact</h2>
+  <p>Questions about these terms? Email <a href="mailto:__SHOP_SUPPORT_EMAIL__" style="color:var(--text)">__SHOP_SUPPORT_EMAIL__</a>.</p>
+</div>
+
+<footer>© <span id="year"></span> apex.opsec</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+  document.getElementById('date').textContent = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+</script>
+</body>
+</html>

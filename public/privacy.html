@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Privacy Policy — __SHOP_NAME__</title>
+<style>
+  :root { --bg:#0a0a0b; --bg-2:#101012; --border:#1f1f24; --text:#ededed; --muted:#8a8a94; --muted-2:#5a5a63; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--text); font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif; line-height:1.65; -webkit-font-smoothing:antialiased; }
+  a { color: inherit; text-decoration: none; }
+  .container { max-width: 720px; margin: 0 auto; padding: 0 24px; }
+  header { border-bottom: 1px solid var(--border); }
+  .nav { display: flex; justify-content: space-between; align-items: center; padding: 18px 0; }
+  .brand { font-weight: 700; font-size: 15px; }
+  .brand span { color: var(--muted); }
+  .nav-links a { color: var(--muted); font-size: 14px; margin-left: 28px; }
+  .nav-links a:hover { color: var(--text); }
+  h1 { font-size: 32px; letter-spacing: -0.02em; margin: 48px 0 8px; }
+  .updated { color: var(--muted); font-size: 13px; margin-bottom: 40px; }
+  h2 { font-size: 18px; margin: 32px 0 8px; }
+  p, li { color: var(--muted); font-size: 15px; }
+  ul { padding-left: 20px; }
+  footer { text-align: center; padding: 48px 24px; color: var(--muted-2); font-size: 12px; margin-top: 96px; border-top: 1px solid var(--border); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="container nav">
+    <a href="/" class="brand">apex<span>.opsec</span></a>
+    <nav class="nav-links">
+      <a href="/support">Support</a>
+      <a href="/terms">Terms</a>
+    </nav>
+  </div>
+</header>
+
+<div class="container">
+  <h1>Privacy Policy</h1>
+  <p class="updated">Last updated: <span id="date"></span></p>
+
+  <h2>What we collect</h2>
+  <ul>
+    <li>Email address you provide at checkout</li>
+    <li>Order details (products purchased, amount, timestamp)</li>
+    <li>Payment method metadata via Stripe (we never see or store card numbers)</li>
+    <li>Billing address, only if required by your payment method</li>
+  </ul>
+
+  <h2>How we use it</h2>
+  <ul>
+    <li>Deliver your license key and access link</li>
+    <li>Send order confirmations and receipts</li>
+    <li>Provide support when you contact us</li>
+    <li>Comply with tax and financial reporting requirements</li>
+  </ul>
+
+  <h2>Third parties</h2>
+  <p>We share the minimum data necessary with Stripe (for payment processing) and our email provider (for delivering confirmations). We do not sell your data to advertisers. We do not run tracking pixels or third-party analytics on this site.</p>
+
+  <h2>Retention</h2>
+  <p>Order records are retained as long as required for tax and support purposes. Support emails are retained for as long as the ticket remains active plus one year.</p>
+
+  <h2>Your rights</h2>
+  <p>You may request a copy or deletion of your personal data by emailing <a href="mailto:__SHOP_SUPPORT_EMAIL__" style="color:var(--text)">__SHOP_SUPPORT_EMAIL__</a>. We will respond within 30 days.</p>
+
+  <h2>Cookies</h2>
+  <p>This site does not use tracking cookies. Session cookies may be used by Stripe on the checkout page for security purposes only.</p>
+
+  <h2>Contact</h2>
+  <p>Privacy questions? Email <a href="mailto:__SHOP_SUPPORT_EMAIL__" style="color:var(--text)">__SHOP_SUPPORT_EMAIL__</a>.</p>
+</div>
+
+<footer>© <span id="year"></span> apex.opsec</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+  document.getElementById('date').textContent = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+</script>
+</body>
+</html>

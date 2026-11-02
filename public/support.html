@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Support — __SHOP_NAME__</title>
+<style>
+  :root { --bg:#0a0a0b; --bg-2:#101012; --border:#1f1f24; --border-hi:#2b2b32; --text:#ededed; --muted:#8a8a94; --muted-2:#5a5a63; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--text); font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif; line-height:1.5; -webkit-font-smoothing:antialiased; }
+  a { color: inherit; text-decoration: none; }
+  .container { max-width: 720px; margin: 0 auto; padding: 0 24px; }
+  header { border-bottom: 1px solid var(--border); }
+  .nav { display: flex; justify-content: space-between; align-items: center; padding: 18px 0; }
+  .brand { font-weight: 700; font-size: 15px; }
+  .brand span { color: var(--muted); }
+  .nav-links { display: flex; gap: 28px; font-size: 14px; }
+  .nav-links a { color: var(--muted); }
+  .nav-links a:hover { color: var(--text); }
+  h1 { font-size: 32px; letter-spacing: -0.02em; margin: 48px 0 8px; }
+  .sub { color: var(--muted); margin: 0 0 40px; }
+  .card { background: var(--bg-2); border: 1px solid var(--border); border-radius: 10px; padding: 24px; margin-bottom: 16px; }
+  .card h3 { margin: 0 0 8px; font-size: 15px; font-weight: 600; }
+  .card p { margin: 0; color: var(--muted); font-size: 14px; line-height: 1.65; }
+  .card a.link { color: var(--text); text-decoration: underline; text-underline-offset: 3px; }
+  form { display: grid; gap: 12px; margin-top: 24px; }
+  input, textarea {
+    width: 100%; padding: 12px 14px;
+    background: var(--bg-2); border: 1px solid var(--border);
+    color: var(--text); font-size: 14px; border-radius: 8px;
+    font-family: inherit;
+  }
+  input:focus, textarea:focus { outline: none; border-color: var(--muted); }
+  textarea { min-height: 140px; resize: vertical; }
+  button {
+    padding: 12px 20px; background: #fff; color: #000;
+    border: none; border-radius: 8px; font-size: 14px; font-weight: 500;
+    cursor: pointer; justify-self: start;
+  }
+  button:hover { background: #ddd; }
+  .status { padding: 12px 14px; border-radius: 8px; font-size: 14px; display: none; }
+  .status.ok { background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.3); color: #10b981; display: block; }
+  .status.err { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3); color: #ef4444; display: block; }
+  footer { text-align: center; padding: 48px 24px; color: var(--muted-2); font-size: 12px; margin-top: 96px; border-top: 1px solid var(--border); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="container nav">
+    <a href="/" class="brand">apex<span>.opsec</span></a>
+    <nav class="nav-links">
+      <a href="/#pricing">Pricing</a>
+      <a href="/#faq">FAQ</a>
+      <a href="/orders.html">My Orders</a>
+    </nav>
+  </div>
+</header>
+
+<div class="container">
+  <h1>Support</h1>
+  <p class="sub">One inbox, real replies. Most tickets resolved within 24 hours.</p>
+
+  <div class="card">
+    <h3>Lost your license or download link?</h3>
+    <p>Head to <a class="link" href="/orders.html">My Orders</a> and enter the email you used at checkout. Everything you've ever purchased will be shown with fresh download links.</p>
+  </div>
+
+  <div class="card">
+    <h3>Refund policy</h3>
+    <p>All sales final once your license key has been redeemed. If your order was never delivered or the key was never revealed to you, we'll make it right — contact us below.</p>
+  </div>
+
+  <div class="card">
+    <h3>Direct email</h3>
+    <p>Prefer email? Reach us at <a class="link" href="mailto:__SHOP_SUPPORT_EMAIL__">__SHOP_SUPPORT_EMAIL__</a> — include your order ID if it's about a specific purchase.</p>
+  </div>
+
+  <div class="card">
+    <h3>Send a message</h3>
+    <p>Fill this out and we'll reply to the email you provide. Keep it concise.</p>
+    <div id="status" class="status"></div>
+    <form id="f">
+      <input type="email" id="email" placeholder="Your email" required>
+      <input type="text" id="order" placeholder="Order ID (optional)">
+      <input type="text" id="subject" placeholder="Subject" required>
+      <textarea id="body" placeholder="What's going on?" required></textarea>
+      <button type="submit">Send message</button>
+    </form>
+  </div>
+</div>
+
+<footer>© <span id="year"></span> apex.opsec</footer>
+
+<script>
+document.getElementById('year').textContent = new Date().getFullYear();
+document.getElementById('f').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const status = document.getElementById('status');
+  status.className = 'status'; status.textContent = '';
+  const payload = {
+    email: document.getElementById('email').value,
+    order_id: document.getElementById('order').value || null,
+    subject: document.getElementById('subject').value,
+    body: document.getElementById('body').value,
+  };
+  try {
+    const r = await fetch('/support/contact', {
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify(payload),
+    });
+    const data = await r.json();
+    if (!r.ok) throw new Error(data.error || 'failed');
+    status.className = 'status ok';
+    status.textContent = 'Thanks — we got your message and will reply soon.';
+    e.target.reset();
+  } catch (err) {
+    status.className = 'status err';
+    status.textContent = err.message;
+  }
+});
+</script>
+</body>
+</html>

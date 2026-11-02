@@ -11,6 +11,7 @@ import { webhookRouter } from './routes/webhook.js';
 import { ordersRouter, downloadRouter } from './routes/orders.js';
 import { adminRouter } from './routes/admin.js';
 import { pagesRouter } from './routes/pages.js';
+import { supportRouter } from './routes/support.js';
 
 const app = express();
 
@@ -38,6 +39,7 @@ app.use('/payments', paymentsRouter);
 app.use('/orders', ordersRouter);
 app.use('/download', downloadRouter);
 app.use('/admin', adminRouter);
+app.use('/support', supportRouter);
 app.use('/', pagesRouter);
 
 app.use((err, req, res, _next) => {

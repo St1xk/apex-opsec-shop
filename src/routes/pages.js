@@ -22,10 +22,13 @@ function render(file) {
 export const pagesRouter = Router();
 
 const routes = {
-  '/': 'index.html',
-  '/success': 'success.html',
-  '/cancel': 'cancel.html',
+  '/':            'index.html',
+  '/success':     'success.html',
+  '/cancel':      'cancel.html',
   '/orders.html': 'orders.html',
+  '/support':     'support.html',
+  '/terms':       'terms.html',
+  '/privacy':     'privacy.html',
 };
 
 for (const [route, file] of Object.entries(routes)) {

@@ -3,82 +3,323 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>__SHOP_NAME__</title>
+<title>__SHOP_NAME__ — __SHOP_TAGLINE__</title>
+<meta name="description" content="__SHOP_TAGLINE__">
 <style>
-  :root { color-scheme: light dark; }
+  :root {
+    --bg: #0a0a0b;
+    --bg-2: #101012;
+    --bg-3: #16161a;
+    --border: #1f1f24;
+    --border-hi: #2b2b32;
+    --text: #ededed;
+    --muted: #8a8a94;
+    --muted-2: #5a5a63;
+    --accent: #d4d4d8;
+    --accent-hi: #ffffff;
+  }
   * { box-sizing: border-box; }
-  body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; background: #0a0a0a; color: #f5f5f5; }
-  .wrap { max-width: 1080px; margin: 0 auto; padding: 48px 24px; }
-  header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 64px; }
-  .logo { font-size: 22px; font-weight: 700; letter-spacing: -0.02em; }
-  nav a { color: #aaa; text-decoration: none; margin-left: 24px; font-size: 14px; }
-  nav a:hover { color: #fff; }
-  .hero { text-align: center; margin-bottom: 64px; }
-  .hero h1 { font-size: clamp(32px, 5vw, 56px); font-weight: 800; letter-spacing: -0.03em; margin: 0 0 16px; background: linear-gradient(135deg, #fff 0%, #888 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-  .hero p { color: #999; font-size: 18px; margin: 0; }
-  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
-  .card { background: #141414; border: 1px solid #222; border-radius: 16px; padding: 28px; transition: all 0.2s; display: flex; flex-direction: column; }
-  .card:hover { border-color: #333; transform: translateY(-2px); }
-  .card h3 { margin: 0 0 8px; font-size: 20px; font-weight: 700; }
-  .card p { color: #999; font-size: 14px; line-height: 1.5; margin: 0 0 24px; flex: 1; }
-  .price { font-size: 32px; font-weight: 800; margin-bottom: 20px; letter-spacing: -0.02em; }
-  .price small { font-size: 14px; color: #666; font-weight: 400; }
-  button { width: 100%; padding: 14px; background: #635BFF; color: white; border: none; border-radius: 10px; font-size: 15px; font-weight: 600; cursor: pointer; transition: background 0.15s; }
-  button:hover { background: #5347ff; }
-  button:disabled { background: #333; cursor: not-allowed; }
-  footer { margin-top: 96px; text-align: center; color: #555; font-size: 13px; }
+  html, body { background: var(--bg); color: var(--text); }
+  body {
+    margin: 0;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    font-feature-settings: 'ss01', 'cv11';
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; text-decoration: none; }
+  .container { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+
+  header {
+    position: sticky; top: 0; z-index: 10;
+    background: rgba(10,10,11,0.8);
+    backdrop-filter: saturate(180%) blur(10px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav { display: flex; justify-content: space-between; align-items: center; padding: 18px 0; }
+  .brand { font-weight: 700; font-size: 15px; letter-spacing: -0.01em; }
+  .brand span { color: var(--muted); }
+  .nav-links { display: flex; gap: 28px; }
+  .nav-links a { font-size: 14px; color: var(--muted); }
+  .nav-links a:hover { color: var(--text); }
+
+  .hero { padding: 96px 0 64px; }
+  .hero .eyebrow { color: var(--muted); font-size: 13px; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 20px; }
+  .hero h1 {
+    font-size: clamp(36px, 6vw, 64px);
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    font-weight: 700;
+    margin: 0 0 20px;
+    max-width: 780px;
+  }
+  .hero p.lede {
+    font-size: 18px;
+    color: var(--muted);
+    max-width: 620px;
+    margin: 0 0 32px;
+  }
+  .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    padding: 12px 20px; border-radius: 8px;
+    font-size: 14px; font-weight: 500;
+    cursor: pointer; border: 1px solid transparent;
+    transition: all 0.15s ease;
+    text-decoration: none;
+  }
+  .btn-primary { background: var(--accent-hi); color: #000; }
+  .btn-primary:hover { background: var(--accent); }
+  .btn-ghost { background: transparent; color: var(--text); border-color: var(--border-hi); }
+  .btn-ghost:hover { border-color: var(--muted); }
+
+  section { padding: 72px 0; border-top: 1px solid var(--border); }
+  section h2 {
+    font-size: clamp(24px, 3vw, 32px);
+    letter-spacing: -0.02em;
+    font-weight: 600;
+    margin: 0 0 8px;
+  }
+  section .sub {
+    color: var(--muted); font-size: 15px; margin: 0 0 48px; max-width: 560px;
+  }
+
+  .tiers { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+  .tier {
+    background: var(--bg-2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px 24px;
+    display: flex; flex-direction: column;
+    position: relative;
+    transition: border-color 0.15s ease;
+  }
+  .tier:hover { border-color: var(--border-hi); }
+  .tier.featured { border-color: var(--muted-2); background: var(--bg-3); }
+  .tier .tag {
+    position: absolute; top: -10px; right: 20px;
+    background: var(--accent-hi); color: #000;
+    font-size: 11px; font-weight: 600; text-transform: uppercase;
+    padding: 4px 10px; border-radius: 100px; letter-spacing: 0.04em;
+  }
+  .tier h3 { margin: 0 0 4px; font-size: 18px; font-weight: 600; letter-spacing: -0.01em; }
+  .tier .desc { color: var(--muted); font-size: 14px; margin: 0 0 24px; min-height: 42px; }
+  .tier .price { font-size: 40px; font-weight: 700; letter-spacing: -0.03em; margin: 0 0 4px; }
+  .tier .price small { font-size: 14px; font-weight: 400; color: var(--muted); }
+  .tier .features {
+    list-style: none; padding: 0; margin: 24px 0;
+    font-size: 14px; color: var(--muted);
+  }
+  .tier .features li { padding: 6px 0; display: flex; align-items: center; gap: 8px; }
+  .tier .features li::before {
+    content: ''; width: 4px; height: 4px; background: var(--muted); border-radius: 50%; flex-shrink: 0;
+  }
+  .tier .btn { margin-top: auto; width: 100%; }
+
+  .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+  .feat {
+    padding: 24px;
+    background: var(--bg-2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+  }
+  .feat .num { color: var(--muted-2); font-size: 12px; font-weight: 500; margin-bottom: 12px; letter-spacing: 0.04em; }
+  .feat h3 { margin: 0 0 6px; font-size: 15px; font-weight: 600; }
+  .feat p { margin: 0; font-size: 14px; color: var(--muted); line-height: 1.6; }
+
+  .faq { display: grid; gap: 4px; max-width: 720px; }
+  details {
+    background: var(--bg-2); border: 1px solid var(--border); border-radius: 8px;
+    padding: 0;
+  }
+  details summary {
+    padding: 18px 20px;
+    cursor: pointer; font-size: 15px; font-weight: 500;
+    list-style: none;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  details summary::-webkit-details-marker { display: none; }
+  details summary::after { content: '+'; color: var(--muted); font-size: 20px; font-weight: 300; }
+  details[open] summary::after { content: '−'; }
+  details p { padding: 0 20px 20px; margin: 0; color: var(--muted); font-size: 14px; line-height: 1.65; }
+
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 48px 0 32px;
+    color: var(--muted);
+    font-size: 13px;
+  }
+  .foot-grid {
+    display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 32px;
+    margin-bottom: 40px;
+  }
+  @media (max-width: 640px) {
+    .foot-grid { grid-template-columns: 1fr 1fr; }
+  }
+  .foot-col h4 { color: var(--text); font-size: 13px; margin: 0 0 12px; font-weight: 600; }
+  .foot-col a { display: block; padding: 4px 0; color: var(--muted); font-size: 13px; }
+  .foot-col a:hover { color: var(--text); }
+  .foot-brand { color: var(--muted-2); font-size: 12px; }
+  .foot-bottom { display: flex; justify-content: space-between; padding-top: 24px; border-top: 1px solid var(--border); flex-wrap: wrap; gap: 12px; }
 </style>
 </head>
 <body>
-<div class="wrap">
-  <header>
-    <div class="logo">__SHOP_NAME__</div>
-    <nav>
+
+<header>
+  <div class="container nav">
+    <div class="brand">apex<span>.opsec</span></div>
+    <nav class="nav-links">
+      <a href="#pricing">Pricing</a>
+      <a href="#faq">FAQ</a>
       <a href="/orders.html">My Orders</a>
-      <a href="mailto:__SHOP_SUPPORT_EMAIL__">Support</a>
+      <a href="/support">Support</a>
     </nav>
-  </header>
-
-  <div class="hero">
-    <h1>__SHOP_TAGLINE__</h1>
-    <p>Instant delivery. Secure checkout via Stripe.</p>
   </div>
+</header>
 
-  <div class="grid" id="grid">Loading…</div>
+<div class="container">
 
-  <footer>© <span id="year"></span> __SHOP_NAME__. Secure payments by Stripe.</footer>
+  <section class="hero" style="border-top:none;padding-top:96px">
+    <div class="eyebrow">Private programs · Instant access</div>
+    <h1>Serious tools for people who don't want the noise.</h1>
+    <p class="lede">apex.opsec ships a curated set of programs and methods you won't find in a bundled marketplace. Pay once, redeem instantly, keep every update on Lifetime.</p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="#pricing">View plans</a>
+      <a class="btn btn-ghost" href="#faq">Read the FAQ</a>
+    </div>
+  </section>
+
+  <section>
+    <h2>Why apex.opsec</h2>
+    <p class="sub">Three things we don't compromise on. Everything else is fair game.</p>
+    <div class="grid-3">
+      <div class="feat">
+        <div class="num">01</div>
+        <h3>Fast access</h3>
+        <p>Redirect and license key delivered to your inbox the moment payment clears. No waiting on a human to process it.</p>
+      </div>
+      <div class="feat">
+        <div class="num">02</div>
+        <h3>Ongoing updates</h3>
+        <p>Lifetime members get every future update pushed to the same Discord and download portal. No re-purchasing.</p>
+      </div>
+      <div class="feat">
+        <div class="num">03</div>
+        <h3>Real support</h3>
+        <p>One inbox, one person reading it. Reasonable response times, no ticket bots, no scripted replies.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="pricing">
+    <h2>Plans</h2>
+    <p class="sub">Same access across every tier. Pick the runway you need.</p>
+    <div class="tiers" id="tiers">Loading plans…</div>
+  </section>
+
+  <section id="faq">
+    <h2>Questions</h2>
+    <p class="sub">If your answer isn't here, hit up support.</p>
+    <div class="faq">
+      <details>
+        <summary>How do I get access after paying?</summary>
+        <p>The second Stripe confirms your payment, you're auto-redirected to the success page with your license key and access link. A copy is also emailed to whatever address you enter at checkout.</p>
+      </details>
+      <details>
+        <summary>What payment methods do you take?</summary>
+        <p>All processing runs through Stripe: major credit and debit cards, Apple Pay, Google Pay, and Link. We never see or store your card details.</p>
+      </details>
+      <details>
+        <summary>Can I upgrade my tier later?</summary>
+        <p>Yes. Any tier can be topped up to a higher one by purchasing the difference — email support with your license key to arrange it.</p>
+      </details>
+      <details>
+        <summary>What happens when my subscription ends?</summary>
+        <p>Week and Month tiers expire on their exact duration from purchase. Access is revoked at the end of the period. Lifetime tier does not expire.</p>
+      </details>
+      <details>
+        <summary>Do you offer refunds?</summary>
+        <p>Because access is delivered digitally and immediately, we don't offer refunds after redemption. If your license key was never redeemed and something went wrong on our end, contact support.</p>
+      </details>
+      <details>
+        <summary>How do I recover my license?</summary>
+        <p>Go to <a href="/orders.html" style="color:var(--text);text-decoration:underline">My Orders</a> and enter the email you used at checkout. All your keys and access links will be shown.</p>
+      </details>
+    </div>
+  </section>
+
 </div>
+
+<footer>
+  <div class="container">
+    <div class="foot-grid">
+      <div class="foot-col">
+        <div class="brand" style="margin-bottom:8px">apex<span>.opsec</span></div>
+        <div class="foot-brand">Private programs and methods. Delivered instant.</div>
+      </div>
+      <div class="foot-col">
+        <h4>Product</h4>
+        <a href="#pricing">Plans</a>
+        <a href="#faq">FAQ</a>
+        <a href="/orders.html">My Orders</a>
+      </div>
+      <div class="foot-col">
+        <h4>Company</h4>
+        <a href="/support">Support</a>
+        <a href="/terms">Terms</a>
+        <a href="/privacy">Privacy</a>
+      </div>
+      <div class="foot-col">
+        <h4>Payments</h4>
+        <div class="foot-brand">Secure checkout by Stripe.</div>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© <span id="year"></span> apex.opsec. All rights reserved.</span>
+      <span>__SHOP_SUPPORT_EMAIL__</span>
+    </div>
+  </div>
+</footer>
 
 <script>
 document.getElementById('year').textContent = new Date().getFullYear();
+const fmt = (c, cur) => new Intl.NumberFormat('en-US', { style: 'currency', currency: cur.toUpperCase(), minimumFractionDigits: 0 }).format(c / 100);
 
-const fmt = (cents, currency) => new Intl.NumberFormat('en-US', { style: 'currency', currency: currency.toUpperCase() }).format(cents / 100);
+const featuresById = {
+  'supporter-week':     ['Full access for 7 days', 'License key on delivery', 'Cancel anytime'],
+  'supporter-month':    ['Full access for 30 days', 'License key on delivery', 'Best value for testing'],
+  'supporter-lifetime': ['Permanent access — no expiry', 'Every future update included', 'Priority support'],
+};
 
-async function load() {
-  const grid = document.getElementById('grid');
+async function loadTiers() {
+  const el = document.getElementById('tiers');
   try {
-    const r = await fetch('/payments/catalog');
-    const products = await r.json();
-    grid.innerHTML = '';
-    for (const p of products) {
+    const products = await (await fetch('/payments/catalog')).json();
+    el.innerHTML = '';
+    products.forEach((p, i) => {
+      const featured = p.id === 'supporter-lifetime';
       const card = document.createElement('div');
-      card.className = 'card';
+      card.className = 'tier' + (featured ? ' featured' : '');
+      const feats = (featuresById[p.id] || []).map(f => '<li>' + f + '</li>').join('');
       card.innerHTML = `
+        ${featured ? '<div class="tag">Best value</div>' : ''}
         <h3>${p.name}</h3>
-        <p>${p.description}</p>
+        <p class="desc">${p.description}</p>
         <div class="price">${fmt(p.price_cents, p.currency)}</div>
-        <button data-id="${p.id}">Buy now</button>
+        <ul class="features">${feats}</ul>
+        <button class="btn btn-primary" data-id="${p.id}">Get access</button>
       `;
-      grid.appendChild(card);
-    }
-    grid.querySelectorAll('button').forEach(b => b.addEventListener('click', () => buy(b)));
+      el.appendChild(card);
+    });
+    el.querySelectorAll('button').forEach(b => b.addEventListener('click', () => buy(b)));
   } catch (e) {
-    grid.textContent = 'Failed to load products.';
+    el.textContent = 'Failed to load plans.';
   }
 }
 
 async function buy(btn) {
   const id = btn.dataset.id;
+  const orig = btn.textContent;
   btn.disabled = true; btn.textContent = 'Redirecting…';
   try {
     const r = await fetch('/payments/checkout', {
@@ -90,12 +331,12 @@ async function buy(btn) {
     if (data.url) window.location.href = data.url;
     else throw new Error(data.error || 'checkout failed');
   } catch (e) {
-    btn.disabled = false; btn.textContent = 'Buy now';
+    btn.disabled = false; btn.textContent = orig;
     alert(e.message);
   }
 }
 
-load();
+loadTiers();
 </script>
 </body>
 </html>
